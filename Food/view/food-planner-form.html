@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, intitial-scale=1">
+	<title>Recipe Search</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="../js/food-planner-form.js"></script>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="home.html">Food Planner</a>
+			<ul class="nav navbar-nav">
+				<li><a href="recipe-search-form.html">Recipe Search</a></li>
+				<li><a href="food-planner-form.html">Meal Planner</a></li>
+				<li><a href="help.html">Help</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<div class="container">
+		<div class="jumbotron">
+			<form>
+				<div class="form-group">
+					<label for="number-of-days">How many days would you like to plan for?</label>
+					<select class="form-control" id="number-of-days-field">
+						<option value=1>1 Day</option>
+						<option value=2>2 Days</option>
+						<option value=3>3 Days</option>
+						<option value=4>4 Days</option>
+						<option value=5>5 Days</option>
+						<option value=6>6 Days</option>
+						<option value=7>7 Days</option>
+					</select>
+				</div>
+				<p id="test"></p>
+				
+				<div class="form-group">
+					<label for="day-defails">Customize your search</label>
+					<div id="day-group-1" class="form-group">
+						<div class="form-check">
+							<div id="meal-options-1">
+								<div class="form-check-label col-md-4">
+									<input class="form-check-input" id="breakfast1" type="checkbox" value="breakfast">
+									Breakfast
+								</div>
+								<div class="form-check-label col-md-4">
+									<input class="form-check-input" id="lunch1" type="checkbox" value="lunch">
+									Lunch
+								</div>
+								<div class="form-check-label col-md-4">
+									<input class="form-check-input" id="dinner1" type="checkbox" value="dinner">
+									Dinner
+								</div>
+							</div>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>
