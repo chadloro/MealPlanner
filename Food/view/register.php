@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<?php
+$username = "thegoat95";
+$password = "adobo2018";
+$hostname = "localhost";
+
+$dbhandle = mysql_connect($hostname, $username, $password)
+    or die("Unable to connect to MySQL");
+echo "Connected to MySQL<br>";
+
+?>
 <html lang="en">
     <head>
         <meta charset="UTF-8">

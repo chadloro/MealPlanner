@@ -5,9 +5,11 @@ $(document).ready(function() {
 
     var count = 1;
 
+    //Sets the default day
     var field1Date = '<label class="form-check-label">' + dayNames[currentDay.getDay()] + " " + monthNames[currentDay.getMonth()] + " " + currentDay.getDate() + "</label>";
     $("#meal-options-1").before(field1Date);
 
+    //Dynamically change the number of day fields
     $("#number-of-days-field").change(function () {
         var fieldValue = $("#number-of-days-field").val();
         fieldValue = parseInt(fieldValue, 10);
@@ -39,6 +41,10 @@ $(document).ready(function() {
         }
 
         count = fieldValue;
+
+    })
+
+    $("#submitbtn").onClick(function() {
 
     })
 })
