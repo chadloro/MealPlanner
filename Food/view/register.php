@@ -1,21 +1,46 @@
 <!DOCTYPE html>
+
 <?php
-$username = "thegoat95";
-$password = "adobo2018";
-$hostname = "localhost";
+    if (isset($_POST['submit'])) {
 
-$dbhandle = mysql_connect($hostname, $username, $password)
-    or die("Unable to connect to MySQL");
-echo "Connected to MySQL<br>";
+        require "../config.php";
 
+        try {
+            $connection = new PDO($dsn, $username, $password, $options);
+
+            $new_user = array(
+                "email" => $_POST['email'],
+                "password" => $_POST['password'],
+                "fname" => $_POST['fname'],
+                "lname" => $_POST['lname'],
+                "city" => $_POST['city'],
+                "country" => $_POST['country'],
+            );
+
+            $sql = sprintf(
+                "INSERT INTO %s (%s) values (%s)",
+                "users",
+                implode(", ", array_keys($new_user)),
+                ":" . implode(", :", array_keys($new_user))
+            );
+
+            $statement = $connection->prepare($sql);
+            $statement->execute($new_user);
+        }
+
+        catch(PDOExceptionError $error) {
+            echo $sql . "<br>" . $error->getMessage();
+        }
+    }
 ?>
+
 <html lang="en">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <script src="../js/register.js"></script>
+        <!--<script src="../js/register.js"></script> Doesn't exist yet -->
         <title>
             Food Planner
         </title>
@@ -39,11 +64,11 @@ echo "Connected to MySQL<br>";
                         <div class="row">
                             <div class="col-md-8">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control">
+                                <input type="email" name="email" class="form-control">
                             </div>
                             <div class="col-md-4">
                                 <label for="pword">Password</label>
-                                <input type="password" class="form-control">
+                                <input type="password" name="password" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -51,11 +76,11 @@ echo "Connected to MySQL<br>";
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="fname">First Name</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="fname" class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label for="lname">Last Name</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="lname" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -63,11 +88,11 @@ echo "Connected to MySQL<br>";
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="city">City</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="city" class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label for="country">Country</label>
-                                <input type="text" class="form-control">
+                                <input type="text" name="country" class="form-control">
                             </div>
                         </div>
                     </div>
@@ -177,7 +202,7 @@ echo "Connected to MySQL<br>";
                             </label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" name="submit" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>
