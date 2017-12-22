@@ -1,11 +1,12 @@
-/*var express = require('express');
+var express = require('express');
 var mysql = require('mysql');
 var app = express();
 var bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static('public'));
+
+app.use(express.static('js'));
 
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -33,12 +34,8 @@ app.post('/data', function(req, resp) {
     var email = req.body.email;
 
     console.log(email);
-
-    //connection.query("INSERT INTO Diet ")
 });
 
-//connection.end();
+connection.end();
 
 app.listen(1337);
-
-*/
