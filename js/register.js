@@ -1,45 +1,46 @@
 
-/*var express = require('express');
-var mysql = require('mysql');
-var app = express();
-var bodyParser = require('body-parser');
+var fieldsValid = false;
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static('public'));
+function checkPassword() {
+    $("#errorspw").empty();
 
-var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'root',
-    database: 'meal_planner'
-});
+    var pass = $("#password").val();
+    var confpass = $("#confpword").val();
+    //debugger;
 
-connection.connect(function(error) {
-    if (!!error) {
-        console.log('Error');
+    if (pass.length < 8) {
+        $("#errorspw").append("Your password must be at least 8 characters.");
     }
-    else {
-        console.log('Connected');
+
+    validatePassword();
+}
+
+function validatePassword() {
+
+    $("#errorsconfpw").empty();
+
+    var pass = $("#password").val();
+    var confpass = $("#confpword").val();
+
+    console.log("password: " + pass);
+    console.log("confirmation password: " + confpass);
+
+    if (confpass.length > 0) {
+        if (pass !== confpass) {
+            $("#errorsconfpw").append("Your passwords don't match.")
+            fieldsValid = false;
+        }
+
+        else {
+            $("#errorsconfpw").append("Passwords match.")
+            fieldsValid = true;
+        }
     }
-});
+}
 
-app.get('/', function(req, resp) {
-    resp.sendFile('/Users/chadloro/Desktop/Meal-Planner/view/register.html');
-    console.log(__dirname);
-    
-});
-
-app.post('/data', function(req, resp) {
-    var email = req.body.email;
-
-    console.log(email);
-
-    //connection.query("INSERT INTO Diet ")
-});
-
-//connection.end();
-
-app.listen(1337);
-
-*/
+function checkValidated(e) {
+    if (!fieldsValid) {
+        console.log("Fields aren't valid");
+        e.preventDefault();
+    }
+}

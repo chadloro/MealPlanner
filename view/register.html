@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <!--<script src="../js/register.js"></script> Doesn't exist yet -->
+        <script type="text/javascript" src="register.js"></script>     
         <!--<script src="../handlebars-v4.0.11.js"></script>-->
         <title>
             Food Planner
@@ -38,11 +38,13 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label for="pword">Password</label>
-                                <input type="password" name="password" class="form-control password">
+                                <input type="password" name="password" id="password" onkeyup="checkPassword()" class="form-control password">
+                                <div id="errorspw"></div>
                             </div>
                             <div class="col-md-6">
                                 <label for="confpword">Confirm Password</label>
-                                <input type="password" name="confpword" class="form-control confpword">
+                                <input type="password" name="confpword" id="confpword" onkeyup="validatePassword()" class="form-control confpword">
+                                <div id="errorsconfpw"></div>
                             </div>
                         </div>
                     </div>
@@ -176,11 +178,11 @@
                             </label>
                         </div>
                     </div>
-                    <input type="submit" class="btn btn-primary submit" value="Submit">
+                    <input type="submit" class="btn btn-primary submit" onclick="checkValidated(event)" value="Submit">
                 </form>
                 
             </div>
         </div>   
-        <script type="text/javascript" src="register.js"></script>     
+        
     </body>
 </html>

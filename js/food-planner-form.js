@@ -13,8 +13,6 @@ $(document).ready(function() {
     $("#number-of-days-field").change(function () {
         var fieldValue = $("#number-of-days-field").val();
         fieldValue = parseInt(fieldValue, 10);
-        //console.log(typeof hello);
-        //document.getElementById("test").innerHTML = hello;
 
         if (fieldValue > count) {
 
@@ -24,7 +22,6 @@ $(document).ready(function() {
                 $(prevField).after(nextField);
                 
                 var futureDay = new Date();
-                //console.log(currentDay.getDate() + i);
                 futureDay.setDate(currentDay.getDate() + i - 1);
                 var fieldxDate = '<label class="form-check-label">' + dayNames[futureDay.getDay()] + " " + monthNames[futureDay.getMonth()] + " " + futureDay.getDate() + "</label>";
                 var mealOptionsSelect = "#meal-options-" + i;
