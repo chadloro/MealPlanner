@@ -6,11 +6,18 @@ var port = process.env.PORT || 8080;
 
 var router = express.Router();
 
+var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var morgan = require('morgan');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use(express.static('js'));
+app.use(express.static(__dirname + '/js'));
 
+app.use(cookieParser());
+
+//DirName: /Users/chadloro/Desktop/MealPlanner
 
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -28,41 +35,65 @@ connection.connect(function(error) {
     }
 });
 
-//module.exports = express;
-//module.exports = mysql;
-//module.exports = app;
-//module.exports = bodyParser;
-//module.exports = connection;
-app.get('/sample', function(req, resp) {
-    res.send('This is a sample!');
-})
-
 router.use(function(req, resp, next) {
     console.log(req.method, req.url);
     next();
 })
 
-router.get('/register', function(req, resp) {
-    resp.sendFile('/Users/chadloro/Desktop/MealPlanner/view/register.html');
+/*
+router.get('/', function(req, resp) {
+    resp.cookie('username', )
+})
+*/
+
+//Render registration page
+router.get('/register.html', function(req, resp) {
+    resp.sendFile(__dirname + '/view/register.html');
+    //resp.cookie('username', 'looksgood');
 });
 
-router.post('/register', function(req, resp) {
+//Submit the registration form
+router.post('/register.html', function(req, resp) {
 
-    //console.log(email);
+    var newUser = [
+        email = req.body.email,
+        password = req.body.password,
+        fname = req.body.fname,
+        lname = req.body.lname,
+        city = req.body.city,
+        country = req.body.country
+    ];
 
-    const newUser = {
-        email: req.body.email,
-        password: req.body.password,
-        fname: req.body.fname,
-        lname: req.body.lname,
-        city: req.body.city,
-        country: req.body.country
+    if (req.body.newUserIntolerances !== undefined) {
+        var newUserIntolerances = req.body.intolerances;
+        var emailIntolerances;
+
+        for (var i = 0; i < newUserIntolerances.length; i++) {
+            emailIntolerances[i] = [req.body.email, newUserIntolerances[i]];
+            connection.query('INSERT INTO User_Intolerances (email, intolerance_name) VALUES (?, ?)', newUserIntolerances[i], (err, result) => {
+                if (err) {
+                  throw err;
+                }
+            });
+        };
+    }
+    
+    if (req.body.newUserDiet !== undefined) {
+        var newUserDiet = req.body.diet;
+        var emailDiets;
+
+        for (var i = 0; i < newUserDiet.length; i++) {
+            emailDiets[i] = [req.body.email, newUserDiet[i]];
+            connection.query('INSERT INTO User_Diet (email, diet_name) VALUES (?, ?)', newUserDiet[i], (err, result) => {
+                if (err) {
+                    throw err;
+                }
+            });
+        };
+        
     }
 
-    console.log(newUser);
-
-    //console.log(insertQuery);
-    connection.query('INSERT INTO User SET ?', newUser, (err, result) => {
+    connection.query('INSERT INTO User (email, password, fname, lname, city, country) VALUES (?, ?, ?, ?, ?, ?)', newUser, (err, result) => {
         if (err) {
             throw err;
         }
@@ -70,16 +101,62 @@ router.post('/register', function(req, resp) {
         console.log("Record inserted!");
     });
 
-    connection.query()
-
-   //resp.send(email);
+    resp.send("Success!");
 });
 
-router.get('/login', function(req, resp) {
-    //resp.sendFile('/Users/chadloro/Desktop/MealPlanner/view/log.html');
-    resp.send("Made it to the login page!");   
+//Render login page
+router.get('/login.html', function(req, resp) {
+    resp.sendFile(__dirname + '/view/login.html');
 });
-  
+
+//Verify email and password
+router.post('/login.html', function(req, resp) {
+    var email = req.body.login_email;
+    var password = req.body.login_password;
+    console.log("Email: " + email);
+    console.log("Password: " + password);
+
+    connection.query('SELECT * FROM User WHERE email = ?', [email], (err, result) => {
+      if (err) {
+          resp.send({
+              "code": 400,
+              "failed": "error occurred"
+          })
+      }
+      else {
+          //console.log()
+          if (result.length > 0) {
+              console.log("database password: " + result[0].password);
+              console.log("submitted password: " + password);
+              if (result[0].password == password) {
+                  resp.send({
+                      "code": 200,
+                      "success": "login successful"
+                      /* add information into cookie here */
+                  });             
+              }
+              else {
+                  resp.send({
+                      "code": 204,
+                      "success": "Email and password don't match"
+                  });
+              }
+          }
+          else {
+              resp.send({
+                  "code": 204,
+                  "success": "email doesn't exist"
+              });
+          }
+      }  
+
+    });
+});
+
+router.get('/food-planner-form.html', function(req, resp) {
+    resp.sendFile(__dirname + '/view/food-planner-form.html');
+});
+
 app.listen(port, function() {
     console.log("Live at Port 8080!")
 });

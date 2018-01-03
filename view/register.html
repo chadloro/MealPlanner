@@ -6,6 +6,7 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <!--<script src="../js/register.js"></script> Doesn't exist yet -->
+        <!--<script src="../handlebars-v4.0.11.js"></script>-->
         <title>
             Food Planner
         </title>
@@ -16,24 +17,32 @@
                 <a class="navbar-brand" href="home.html">Food Planner</a>
                 <ul class="nav navbar-nav">
                     <li><a href="recipe-search-form.html">Recipe Search</a></li>
-                    <li><a href="food-planner-form.html">Meal Planner</a></li>
-                    <li><a href="help.html">Help</a></li>
+                    <li><a href="food-planner-form">Meal Planner</a></li>
+                    <li><a href="login">Login</a></li>
                 </ul>
             </div>
         </nav>
 
         <div class="container">
             <div class="jumbotron">
-                <form action="/register" method="post" class="userRegistration"> 
+                <form action="/register.html" method="post" class="userRegistration"> 
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-12">
                                 <label for="email">Email</label>
                                 <input type="email" name="email" class="form-control email">
-                            </div>
-                            <div class="col-md-4">
+                            </div>                          
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
                                 <label for="pword">Password</label>
                                 <input type="password" name="password" class="form-control password">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="confpword">Confirm Password</label>
+                                <input type="password" name="confpword" class="form-control confpword">
                             </div>
                         </div>
                     </div>
@@ -51,119 +60,119 @@
                     </div>
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-7">
                                 <label for="city">City</label>
                                 <input type="text" name="city" class="form-control">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <label for="country">Country</label>
                                 <input type="text" name="country" class="form-control">
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group intolerances">
                         <label class="form-check-label">Intolerances</label>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Dairy"> Dairy
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="DAIR"> Dairy
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Eggs"> Eggs
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="EGGS"> Eggs
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Fish"> Fish
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="FISH"> Fish
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Gluten"> Gluten
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="GLUT"> Gluten
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Peanuts"> Peanuts
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="PEAN"> Peanuts
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Shellfish"> Shellfish
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="SHEL"> Shellfish
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Soy"> Soy
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="SOYY"> Soy
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Tree Nuts"> Tree Nuts
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="TREE"> Tree Nuts
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Wheat"> Wheat
+                                <input class="form-check-input" name="intolerances" type="checkbox" value="WHEA"> Wheat
                             </label>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group diets">
                         <label class="form-check-label">Diets</label>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Alcohol-free"> Alcohol-free
+                                <input class="form-check-input" name="diet" type="checkbox" value="ALCO"> Alcohol-free
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Balanced"> Balanced
+                                <input class="form-check-input" name="diet" type="checkbox" value="BALA"> Balanced
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="High Fiber"> High Fiber
+                                <input class="form-check-input" name="diet" type="checkbox" value="HIFI"> High Fiber
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="High Protein"> High Protein
+                                <input class="form-check-input" name="diet" type="checkbox" value="HIPR"> High Protein
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Low Carb"> Low Carb
+                                <input class="form-check-input" name="diet" type="checkbox" value="LOCA"> Low Carb
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Low Fat"> Low Fat
+                                <input class="form-check-input" name="diet" type="checkbox" value="LOFA"> Low Fat
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Low Sodium"> Low Sodium
+                                <input class="form-check-input" name="diet" type="checkbox" value="LOSO"> Low Sodium
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Low Sugar"> Low Sugar
+                                <input class="form-check-input" name="diet" type="checkbox" value="LOSU"> Low Sugar
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Paleo"> Paleo
+                                <input class="form-check-input" name="diet" type="checkbox" value="PALE"> Paleo
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Vegan"> Vegan
+                                <input class="form-check-input" name="diet" type="checkbox" value="VEGA"> Vegan
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
-                                <input class="form-check-input" type="checkbox" value="Vegetarian"> Vegetarian
+                                <input class="form-check-input" name="diet" type="checkbox" value="VEGE"> Vegetarian
                             </label>
                         </div>
                     </div>
@@ -172,6 +181,6 @@
                 
             </div>
         </div>   
-        <script src="/register.js"></script>     
+        <script type="text/javascript" src="register.js"></script>     
     </body>
 </html>
