@@ -4,8 +4,9 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, intitial-scale=1">
 	<title>Recipe Search</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="food-planner-form.js"></script>
 </head>
 <body>
@@ -22,7 +23,7 @@
 	
 	<div class="container">
 		<div class="jumbotron">
-			<form>
+			<form class="planner-form">
 				<div class="form-group">
 					<label for="number-of-days">How many days would you like to plan for?</label>
 					<select class="form-control" id="number-of-days-field">
@@ -43,22 +44,72 @@
 						<div class="form-check">
 							<div id="meal-options-1">
 								<div class="form-check-label col-md-4">
-									<input class="form-check-input" id="breakfast1" type="checkbox" value="breakfast">
-									Breakfast
+									<input class="form-check-input" id="boxbreakfast1" type="checkbox" value="breakfast" disabled>
+									<button type="button" class="btn btn-outline-secondary btn-sm" id="breakfast1">Breakfast</button>
+									<div class="form-check-label" id="resbreakfast1" style="display: none">
+										<input class="form-control ingredient-list-result" id="ilrbreakfast1">
+									</div>
 								</div>
 								<div class="form-check-label col-md-4">
-									<input class="form-check-input" id="lunch1" type="checkbox" value="lunch">
-									Lunch
+									<input class="form-check-input" id="boxlunch1" type="checkbox" value="lunch" disabled>
+									<button type="button" class="btn btn-outline-secondary btn-sm" id="lunch1">Lunch</button>
+									<div class="form-check-label" id="reslunch1" style="display: none">
+										<input class="form-control ingredient-list-result" id="ilrlunch1">
+									</div>
 								</div>
 								<div class="form-check-label col-md-4">
-									<input class="form-check-input" id="dinner1" type="checkbox" value="dinner">
-									Dinner
+									<input class="form-check-input" id="boxdinner1" type="checkbox" value="dinner" disabled>
+									<button type="button" class="btn btn-outline-secondary btn-sm" id="dinner1">Dinner</button>
+									<div class="form-check-label" id="resdinner1" style="display: none">
+										<input class="form-control ingredient-list-result" id="ilrdinner1">
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-					<button type="submit" class="btn btn-primary" id="submitbtn">Submit</button>
+					<button type="button" class="btn btn-primary" id="submitbtn">Submit</button>
 				</div>
+
+				<!-- MODAL -->
+				<div id="clickedBoxModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">Customize Your Selections</h4>
+							</div>
+							
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="ingredientList">List your ingredients separated by a comma</label>
+									<input type="text" name="ingredient_list" id="ingredientList" class="form-control" placeholder="eg. Milk, cheese, honey... etc">
+								</div>
+								<div class="form-group">
+									<div class="form-row">
+										<div class="col-sm-6">
+											<input type="number" name="minCals" id="minCals" class="form-control" placeholder="Min cals.">
+										</div>
+										<div class="col-sm-6">
+											<input type="number" name="maxCals" id="maxCals" class="form-control" placeholder="Max cals.">
+										</div>
+									</div>
+								</div>
+								<!--
+								<div id="calorieRange">
+									<input type="number" name="minCalories" id="minCalories" class="form-control" placeholder="Min cal.">
+									<input type="number" name="maxCalories" id="maxCalories" class="form-control" placeholder="Max cal.">
+								</div>-->
+
+							</div>
+
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal" id="save">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END OF MODAL -->
 			</form>
 		</div>
 	</div>

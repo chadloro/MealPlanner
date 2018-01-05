@@ -9,6 +9,7 @@ var router = express.Router();
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var morgan = require('morgan');
+var handlebars = require('handlebars');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -16,6 +17,28 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(__dirname + '/js'));
 
 app.use(cookieParser());
+
+router.use(session({
+    secret: 'sekritz',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {maxAge: 30000}
+}));
+
+/*
+router.get('/', function(req, resp, next) {
+    debugger;
+    var sessData = req.session;
+    sessData.username = "waddup fam";
+    console.log("session data username: " + sessData.username);
+    resp.send("Returning with some text");
+} );
+
+router.get('/hallelujah', function(req, resp, next) {
+    var someAttr = req.session.username;
+    console.log("SomeAttr: " + someAttr);
+    resp.send("This will print " + someAttr);
+})*/
 
 //DirName: /Users/chadloro/Desktop/MealPlanner
 
@@ -129,6 +152,13 @@ router.post('/login.html', function(req, resp) {
               console.log("database password: " + result[0].password);
               console.log("submitted password: " + password);
               if (result[0].password == password) {
+                  var sessionData = req.session;
+                  sessionData.userId = result[0].id;
+                  sessionData.fname = result[0].fname;
+                  sessionData.email = result[0].email;
+
+                  console.log(sessionData);
+
                   resp.send({
                       "code": 200,
                       "success": "login successful"
@@ -153,7 +183,7 @@ router.post('/login.html', function(req, resp) {
     });
 });
 
-router.get('/food-planner-form.html', function(req, resp) {
+router.get('/food-planner-form.html', function(req, resp, next) {
     resp.sendFile(__dirname + '/view/food-planner-form.html');
 });
 
