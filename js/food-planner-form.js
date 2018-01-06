@@ -71,19 +71,16 @@ $(document).ready(function() {
     });
 
     //When modal save is clicked
+    //TODO: change colour of buttons
     $("#clickedBoxModal").on("click", "#save", function() {
         //debugger;
         var ingredientInput = $("#ingredientList").val();
         var fieldToFill = "#ilr" + clickedBoxId;
-        //$(divToAppear).attr("style", "display: inline");
         $(fieldToFill).val(ingredientInput);
         var toCheck = "#box" + clickedBoxId;
-        //$(clickedBoxId).attr("class", "btn btn-outline-secondary btn-sm");
         $(toCheck).prop('checked', true);
 
-        if (ingredientInput == "") {          
-            //$(clickedBoxId).removeClass("btn-outline-success")
-            //$(clickedBoxId).addClass("btn-outline-secondary");
+        if (ingredientInput == "") {  
             $(toCheck).prop('checked', false);
         }
 
@@ -106,11 +103,14 @@ $(document).ready(function() {
 
                 var apiURL = "https://api.edamam.com/search?q=" + ingredients + "&app_id=" + apiId + "&app_key=" + apiKey;
                 
-                console.log(apiURL);
+                //debugger;
+                var apiRequest = new XMLHttpRequest();
+                apiRequest.open("GET", apiURL);
+                apiRequest.onload = function() {
+                    console.log(apiRequest.responseText)
+                };
 
-                loadJSON(apiURL, dataReceived);
-
-                
+                apiRequest.send();               
             }
         })        
     })

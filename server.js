@@ -25,23 +25,6 @@ router.use(session({
     cookie: {maxAge: 30000}
 }));
 
-/*
-router.get('/', function(req, resp, next) {
-    debugger;
-    var sessData = req.session;
-    sessData.username = "waddup fam";
-    console.log("session data username: " + sessData.username);
-    resp.send("Returning with some text");
-} );
-
-router.get('/hallelujah', function(req, resp, next) {
-    var someAttr = req.session.username;
-    console.log("SomeAttr: " + someAttr);
-    resp.send("This will print " + someAttr);
-})*/
-
-//DirName: /Users/chadloro/Desktop/MealPlanner
-
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -62,12 +45,6 @@ router.use(function(req, resp, next) {
     console.log(req.method, req.url);
     next();
 })
-
-/*
-router.get('/', function(req, resp) {
-    resp.cookie('username', )
-})
-*/
 
 //Render registration page
 router.get('/register.html', function(req, resp) {
@@ -124,7 +101,7 @@ router.post('/register.html', function(req, resp) {
         console.log("Record inserted!");
     });
 
-    resp.send("Success!");
+    resp.sendFile(__dirname + '/view/login.html');
 });
 
 //Render login page
@@ -132,7 +109,7 @@ router.get('/login.html', function(req, resp) {
     resp.sendFile(__dirname + '/view/login.html');
 });
 
-//Verify email and password
+//Submit login form, verify email and password, set up the cookie
 router.post('/login.html', function(req, resp) {
     var email = req.body.login_email;
     var password = req.body.login_password;
@@ -159,11 +136,7 @@ router.post('/login.html', function(req, resp) {
 
                   console.log(sessionData);
 
-                  resp.send({
-                      "code": 200,
-                      "success": "login successful"
-                      /* add information into cookie here */
-                  });             
+                  resp.sendFile(__dirname + "/view/login-success.html");            
               }
               else {
                   resp.send({
@@ -183,6 +156,7 @@ router.post('/login.html', function(req, resp) {
     });
 });
 
+//Render food planning form page
 router.get('/food-planner-form.html', function(req, resp, next) {
     resp.sendFile(__dirname + '/view/food-planner-form.html');
 });
@@ -192,21 +166,3 @@ app.listen(port, function() {
 });
 
 app.use('/', router);
-
-/*
-app.post('/register', function(req, resp) {
-    var email = req.body.email;
-
-    console.log(email);
-});
-
-app.post('/login', function(req, resp) {
-    var email = req.body.email;
-
-    console.log(email);
-});
-
-connection.end();
-
-app.listen(1337);
-*/
