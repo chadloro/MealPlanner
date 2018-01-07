@@ -7,10 +7,11 @@ $(document).ready(function() {
     var count = 1;
 
     var clickedBoxId = null;
+    var resultsDisplay = document.getElementById("resultsDisplay");
 
     //Sets the default day
-    var field1Date = '<label class="form-check-label">' + dayNames[currentDay.getDay()] + " " + monthNames[currentDay.getMonth()] + " " + currentDay.getDate() + "</label>";
-    $("#meal-options-1").before(field1Date);
+    var field1Date = dayNames[currentDay.getDay()] + " " + monthNames[currentDay.getMonth()] + " " + currentDay.getDate();
+    $("#date1").text(field1Date);
 
     //Dynamically change the number of day fields
     $("#number-of-days-field").change(function () {
@@ -20,15 +21,15 @@ $(document).ready(function() {
         if (fieldValue > count) {
 
             for (var i = count + 1; i <= fieldValue; i++) {
-                var nextField = '<div id="day-group-' + i + '" class="form-group"><div class="form-check"><div id="meal-options-' + i + '"><div class="form-check-label col-md-4"><input class="form-check-input" id="boxbreakfast' + i + '" type="checkbox" value="breakfast" disabled><button type="button" class="btn btn-outline-secondary btn-sm" id="breakfast' + i + '">Breakfast</button><div class="form-check-label" id="resbreakfast' + i + '" style="display: none"><input class="form-control ingredient-list-result" id="ilrbreakfast' + i + '"></div></div><div class="form-check-label col-md-4"><input class="form-check-input" id="boxlunch' + i + '" type="checkbox" value="lunch" disabled><button type="button" class="btn btn-outline-secondary btn-sm" id="lunch' + i + '">Lunch</button><div class="form-check-label" id="reslunch' + i + '" style="display: none"><input class="form-control ingredient-list-result" id="ilrlunch' + i + '"></div></div><div class="form-check-label col-md-4"><input class="form-check-input" id="boxdinner' + i + '" type="checkbox" value="dinner" disabled><button type="button" class="btn btn-outline-secondary btn-sm" id="dinner' + i + '">Dinner</button><div class="form-check-label" id="resdinner' + i + '" style="display: none"><input class="form-control ingredient-list-result" id="ilrdinner' + i + '"></div></div></div></div></div>'
+                var nextField = '<div id="day-group-' + i + '"><table class="table table-bordered"><thead class="thead-inverse"><tr><th id="date' + i + '"></th></tr></thead><tbody><tr><td class="col-md-4 text-center" id="breakfast' + i + '">Breakfast</td><td class="col-md-4 text-center" id="lunch' + i + '">Lunch</td><td class="col-md-4 text-center" id="dinner' + i + '">Dinner</td></tr></tbody></table></div>'
                 var prevField = '#day-group-' + (i - 1);
                 $(prevField).after(nextField);
                 
                 var futureDay = new Date();
                 futureDay.setDate(currentDay.getDate() + i - 1);
-                var fieldxDate = '<label class="form-check-label">' + dayNames[futureDay.getDay()] + " " + monthNames[futureDay.getMonth()] + " " + futureDay.getDate() + "</label>";
-                var mealOptionsSelect = "#meal-options-" + i;
-                $(mealOptionsSelect).before(fieldxDate);
+                var fieldxDate = dayNames[futureDay.getDay()] + " " + monthNames[futureDay.getMonth()] + " " + futureDay.getDate();
+                var mealOptionsSelect = "#date" + i;
+                $(mealOptionsSelect).text(fieldxDate);
             }
         }
 
@@ -44,78 +45,99 @@ $(document).ready(function() {
     })
 
     //Trigger modal
-    $(".form-group").on("click", "button", function(event) {
+    $(".form-group").on("click", "td", function(event) {
         //debugger;
-        clickedBoxId = this.id; 
-        
-        var toCheck = "#box" + clickedBoxId;
-        var isChecked = $(toCheck).is(':checked');
+        $("#resultsDisplay").empty();
+        $("#ingredientList").val("");
+        clickedBoxId = "#" + this.id; 
+        console.log("this id: " + clickedBoxId);
 
-        
+        var mealText = $(clickedBoxId).text();
+        console.log("customize text: " + mealText);
 
-        if (!isChecked) {
-            //$(toCheck).prop('checked', true);
-            $("#ingredientList").val("");
-            $("#clickedBoxModal").modal("show");        
-        }
+        var modalHeaderText = "Customize your search for " + mealText; //add date
 
-        else {
-            var fieldToFetchFrom = "#ilr" + clickedBoxId;
-            var fieldToFetchFromValue = $(fieldToFetchFrom).val();
-            $("#ingredientList").val(fieldToFetchFromValue);
+        $(".customize-your-selections-box").text(modalHeaderText);
+    
+        $("#mealDayModal").modal("show");        
 
-            $("#clickedBoxModal").modal("show");
-            //$(toCheck).prop('checked', false);
-            
-        }
     });
 
-    //When modal save is clicked
-    //TODO: change colour of buttons
-    $("#clickedBoxModal").on("click", "#save", function() {
+    //When modal 'Show Results' is clicked
+    $("#mealDayModal").on("click", "#showResults", function() {
+        
         //debugger;
         var ingredientInput = $("#ingredientList").val();
-        var fieldToFill = "#ilr" + clickedBoxId;
-        $(fieldToFill).val(ingredientInput);
-        var toCheck = "#box" + clickedBoxId;
-        $(toCheck).prop('checked', true);
 
-        if (ingredientInput == "") {  
-            $(toCheck).prop('checked', false);
+        if (ingredientInput == "") {
+            return;
+        }  
+
+        ingredientInput = ingredientInput.replace(/\s*, \s*/g, ",");
+        ingredientInput = ingredientInput.replace(/ /g, "%20");
+
+        var apiId = "051df186";
+        var apiKey = "94f81f560ef00f24721be58e2d70383e"
+
+        var apiURL = "https://api.edamam.com/search?q=" + ingredientInput + "&app_id=" + apiId + "&app_key=" + apiKey;
+        
+        console.log(apiURL);
+
+        //Fetching food query data from API
+        var apiRequest = new XMLHttpRequest();
+        apiRequest.open("GET", apiURL);
+        apiRequest.onload = function() {
+            var foodData = JSON.parse(apiRequest.responseText);
+            console.log(foodData.q);
+            console.log("Made it here");
+
+            renderHTML(foodData.hits);
+            /*
+            var test = foodData.hits[0].recipe.image;
+            console.log("Test: " + test);
+            debugger;
+            $(clickedBoxId).css("background-image", foodData.hits[0].recipe.image);
+            */
+
+            $("#resultsDisplay").on("click", ".choose-button", function() {
+                console.log("This id = " + this.id);
+                var index = parseInt(this.id.slice(-1));
+                console.log("Index: " + index);
+                //$(clickedBoxId).css("background-image", foodData.hits[index].recipe.image);//not working for some reason
+
+                $(clickedBoxId).text(foodData.hits[index].recipe.label);
+            
+            });
+        };
+
+        apiRequest.send(); 
+
+    
+
+        
+        //$("#ingredientList").val("");
+    })
+
+    
+
+    function renderHTML(data) {
+        var HTMLString = "";
+        console.log(data);
+        var results = data.length;
+
+        //remove this later
+        if (data.length > 10) {
+            var results = 10;
         }
 
-        $("#ingredientList").val("");
-    })
+        for (var i = 0; i < results; i++) {
+            HTMLString += "<ul class='list-group item" + i + "'><li class='list-group-item'><img src='" + data[i].recipe.image + "' style='height:100px;width:100px'><a href=" + data[i].recipe.url + ">" + data[i].recipe.label + "</a><button class='choose-button' id='choose-id" + i + "' data-dismiss='modal'>Choose</button></li></div>"
+            
+        }
+        
+        console.log(HTMLString);
+        resultsDisplay.insertAdjacentHTML('beforeend', HTMLString);
 
-    $(".planner-form").on("click", "#submitbtn", function() {
-        $(".ingredient-list-result").each(function (index, item) { //item = hiddenField's ID
-            if ($(item).val()) {
-                //console.log($(item).val());
-                var ingredients = $(item).val();
-                console.log("Ingredients: " + ingredients);
-
-                ingredients = ingredients.replace(/\s*, \s*/g, ",");
-                ingredients = ingredients.replace(/ /g, "%20");
-                console.log("New Ingredients: " + ingredients);
-                
-                var apiId = "051df186";
-                var apiKey = "94f81f560ef00f24721be58e2d70383e"
-
-                var apiURL = "https://api.edamam.com/search?q=" + ingredients + "&app_id=" + apiId + "&app_key=" + apiKey;
-                
-                //debugger;
-                var apiRequest = new XMLHttpRequest();
-                apiRequest.open("GET", apiURL);
-                apiRequest.onload = function() {
-                    console.log(apiRequest.responseText)
-                };
-
-                apiRequest.send();               
-            }
-        })        
-    })
-
-    function dataReceived(data) {
-        console.log(data);
+        
     }
 })

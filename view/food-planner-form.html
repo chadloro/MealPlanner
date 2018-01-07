@@ -39,44 +39,32 @@
 				<p id="test"></p>
 				
 				<div class="form-group">
-					<label for="day-defails">Customize your search</label>
-					<div id="day-group-1" class="form-group">
-						<div class="form-check">
-							<div id="meal-options-1">
-								<div class="form-check-label col-md-4">
-									<input class="form-check-input" id="boxbreakfast1" type="checkbox" value="breakfast" disabled>
-									<button type="button" class="btn btn-outline-secondary btn-sm" id="breakfast1">Breakfast</button>
-									<div class="form-check-label" id="resbreakfast1" style="display: none">
-										<input class="form-control ingredient-list-result" id="ilrbreakfast1">
-									</div>
-								</div>
-								<div class="form-check-label col-md-4">
-									<input class="form-check-input" id="boxlunch1" type="checkbox" value="lunch" disabled>
-									<button type="button" class="btn btn-outline-secondary btn-sm" id="lunch1">Lunch</button>
-									<div class="form-check-label" id="reslunch1" style="display: none">
-										<input class="form-control ingredient-list-result" id="ilrlunch1">
-									</div>
-								</div>
-								<div class="form-check-label col-md-4">
-									<input class="form-check-input" id="boxdinner1" type="checkbox" value="dinner" disabled>
-									<button type="button" class="btn btn-outline-secondary btn-sm" id="dinner1">Dinner</button>
-									<div class="form-check-label" id="resdinner1" style="display: none">
-										<input class="form-control ingredient-list-result" id="ilrdinner1">
-									</div>
-								</div>
-							</div>
-						</div>
+					<div id="day-group-1">
+						<table class="table table-bordered">
+							<thead class="thead-inverse">
+								<tr>
+									<th id="date1"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="col-md-4 text-center" id="breakfast1">Breakfast</td>
+									<td class="col-md-4 text-center" id="lunch1">Lunch</td>
+									<td class="col-md-4 text-center" id="dinner1">Dinner</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<button type="button" class="btn btn-primary" id="submitbtn">Submit</button>
 				</div>
+			</form>
 
-				<!-- MODAL -->
-				<div id="clickedBoxModal" class="modal fade">
+				<!-- MEAL MODAL -->
+				<div id="mealDayModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								<h4 class="modal-title">Customize Your Selections</h4>
+								<h4 class="modal-title customize-your-selections-box"></h4>
 							</div>
 							
 							<div class="modal-body">
@@ -94,6 +82,10 @@
 										</div>
 									</div>
 								</div>
+
+								<button type="button" class="btn btn-primary" id="showResults">Show results</button>
+
+								<div id="resultsDisplay"></div>
 								<!--
 								<div id="calorieRange">
 									<input type="number" name="minCalories" id="minCalories" class="form-control" placeholder="Min cal.">
@@ -101,16 +93,11 @@
 								</div>-->
 
 							</div>
-
-							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
-								<button type="button" class="btn btn-primary" data-dismiss="modal" id="save">Save changes</button>
-							</div>
 						</div>
 					</div>
 				</div>
-				<!-- END OF MODAL -->
-			</form>
+				<!-- END OF MEAL MODAL -->
+			
 		</div>
 	</div>
 
