@@ -48,9 +48,9 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td class="col-md-4 text-center" id="breakfast1">Breakfast</td>
-									<td class="col-md-4 text-center" id="lunch1">Lunch</td>
-									<td class="col-md-4 text-center" id="dinner1">Dinner</td>
+									<td class="col-md-4 text-center"><p id="breakfast1">Breakfast</p><input type="hidden" id="breakfast1entry"></td>
+									<td class="col-md-4 text-center"><p id="lunch1">Lunch</p><input type="hidden" id="lunch1entry"></td>
+									<td class="col-md-4 text-center"><p id="dinner1">Dinner</p><input type="hidden" id="dinner1entry"></td>
 								</tr>
 							</tbody>
 						</table>
@@ -64,7 +64,7 @@
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								<h4 class="modal-title customize-your-selections-box"></h4>
+								<h4 class="modal-title recipe-label"></h4>
 							</div>
 							
 							<div class="modal-body">
@@ -97,6 +97,45 @@
 					</div>
 				</div>
 				<!-- END OF MEAL MODAL -->
+				<!-- RESULT MODAL -->
+				<div id="resultModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title customize-your-selections-box"></h4>
+							</div>
+							
+							<div class="modal-body">
+								<div class="form-group">
+									<label id="recipe-label"></label>
+									<input type="text" name="ingredient_list" id="ingredientList" class="form-control" placeholder="eg. Milk, cheese, honey... etc">
+								</div>
+								<div class="form-group">
+									<div class="form-row">
+										<div class="col-sm-6">
+											<input type="number" name="minCals" id="minCals" class="form-control" placeholder="Min cals.">
+										</div>
+										<div class="col-sm-6">
+											<input type="number" name="maxCals" id="maxCals" class="form-control" placeholder="Max cals.">
+										</div>
+									</div>
+								</div>
+
+								<button type="button" class="btn btn-primary" id="showResults">Show results</button>
+
+								<div id="resultsDisplay"></div>
+								<!--
+								<div id="calorieRange">
+									<input type="number" name="minCalories" id="minCalories" class="form-control" placeholder="Min cal.">
+									<input type="number" name="maxCalories" id="maxCalories" class="form-control" placeholder="Max cal.">
+								</div>-->
+
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- END OF RESULT MODAL -->
 			
 		</div>
 	</div>

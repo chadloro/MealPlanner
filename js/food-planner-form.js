@@ -7,7 +7,11 @@ $(document).ready(function() {
     var count = 1;
 
     var clickedBoxId = null;
+    var entryField = null;
     var resultsDisplay = document.getElementById("resultsDisplay");
+
+    var apiId = "051df186";
+    var apiKey = "94f81f560ef00f24721be58e2d70383e"
 
     //Sets the default day
     var field1Date = dayNames[currentDay.getDay()] + " " + monthNames[currentDay.getMonth()] + " " + currentDay.getDate();
@@ -21,7 +25,7 @@ $(document).ready(function() {
         if (fieldValue > count) {
 
             for (var i = count + 1; i <= fieldValue; i++) {
-                var nextField = '<div id="day-group-' + i + '"><table class="table table-bordered"><thead class="thead-inverse"><tr><th id="date' + i + '"></th></tr></thead><tbody><tr><td class="col-md-4 text-center" id="breakfast' + i + '">Breakfast</td><td class="col-md-4 text-center" id="lunch' + i + '">Lunch</td><td class="col-md-4 text-center" id="dinner' + i + '">Dinner</td></tr></tbody></table></div>'
+                var nextField = '<div id="day-group-' + i + '"><table class="table table-bordered"><thead class="thead-inverse"><tr><th id="date' + i + '"></th></tr></thead><tbody><tr><td class="col-md-4 text-center"><p id="breakfast' + i + '">Breakfast</p><input type="hidden" id="breakfast' + i + 'entry"></td><td class="col-md-4 text-center"><p id="lunch' + i + '">Lunch</p><input type="hidden" id="lunch' + i + 'entry"></td><td class="col-md-4 text-center"><p id="dinner' + i + '">Dinner</p><input type="hidden" id="dinner' + i + 'entry"></td></tr></tbody></table></div>'
                 var prevField = '#day-group-' + (i - 1);
                 $(prevField).after(nextField);
                 
@@ -45,21 +49,49 @@ $(document).ready(function() {
     })
 
     //Trigger modal
-    $(".form-group").on("click", "td", function(event) {
+    $(".form-group").on("click", "p", function(event) {
         //debugger;
+
         $("#resultsDisplay").empty();
         $("#ingredientList").val("");
+
         clickedBoxId = "#" + this.id; 
         console.log("this id: " + clickedBoxId);
 
-        var mealText = $(clickedBoxId).text();
-        console.log("customize text: " + mealText);
+        entryField = clickedBoxId + "entry";
 
-        var modalHeaderText = "Customize your search for " + mealText; //add date
-
-        $(".customize-your-selections-box").text(modalHeaderText);
+        if ($(entryField).val() == "") {
+            var mealText = $(clickedBoxId).text();
+            console.log("customize text: " + mealText);
     
-        $("#mealDayModal").modal("show");        
+            var modalHeaderText = "Customize your search for " + mealText; //add date
+    
+            $(".customize-your-selections-box").text(modalHeaderText);
+        
+            $("#mealDayModal").modal("show");  
+        }
+
+        else {
+            
+            var URIEntry = $(entryField).val();
+
+            var fetchURIURL = "https://api.edamam.com/search?r=" + URIEntry + "&app_id=" + apiId + "&app_key=" + apiKey
+
+            var fetchURIRequest = new XMLHttpRequest();
+            fetchURIRequest.open("GET", fetchURIURL);
+            fetchURIRequest.onload = function() {
+                var recipe = JSON.parse(fetchURIRequest.responseText);
+
+                $(".recipe-label").text(recipe[0].label);
+
+                $("#resultModal").modal("show");
+
+            };
+    
+            fetchURIRequest.send(); 
+        }
+
+              
 
     });
 
@@ -71,13 +103,10 @@ $(document).ready(function() {
 
         if (ingredientInput == "") {
             return;
-        }  
+        } 
 
         ingredientInput = ingredientInput.replace(/\s*, \s*/g, ",");
         ingredientInput = ingredientInput.replace(/ /g, "%20");
-
-        var apiId = "051df186";
-        var apiKey = "94f81f560ef00f24721be58e2d70383e"
 
         var apiURL = "https://api.edamam.com/search?q=" + ingredientInput + "&app_id=" + apiId + "&app_key=" + apiKey;
         
@@ -92,12 +121,6 @@ $(document).ready(function() {
             console.log("Made it here");
 
             renderHTML(foodData.hits);
-            /*
-            var test = foodData.hits[0].recipe.image;
-            console.log("Test: " + test);
-            debugger;
-            $(clickedBoxId).css("background-image", foodData.hits[0].recipe.image);
-            */
 
             $("#resultsDisplay").on("click", ".choose-button", function() {
                 console.log("This id = " + this.id);
@@ -106,16 +129,14 @@ $(document).ready(function() {
                 //$(clickedBoxId).css("background-image", foodData.hits[index].recipe.image);//not working for some reason
 
                 $(clickedBoxId).text(foodData.hits[index].recipe.label);
+
+                $(entryField).val(foodData.hits[index].recipe.uri);
+                
             
             });
         };
 
         apiRequest.send(); 
-
-    
-
-        
-        //$("#ingredientList").val("");
     })
 
     
@@ -141,3 +162,6 @@ $(document).ready(function() {
         
     }
 })
+
+
+//TODO add hidden checkbox + input field for URI
