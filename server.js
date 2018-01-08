@@ -25,6 +25,7 @@ router.use(session({
     cookie: {maxAge: 30000}
 }));
 
+//Creates the connection to connect to the meal_planner mySQL database
 var connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
@@ -32,6 +33,7 @@ var connection = mysql.createConnection({
     database: 'meal_planner'
 });
 
+//Checks if connection went through
 connection.connect(function(error) {
     if (!!error) {
         console.log('Error');
@@ -52,7 +54,7 @@ router.get('/register.html', function(req, resp) {
     //resp.cookie('username', 'looksgood');
 });
 
-//Submit the registration form
+//Submit the registration page form
 router.post('/register.html', function(req, resp) {
 
     var newUser = [
