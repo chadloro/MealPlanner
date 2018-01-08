@@ -43,6 +43,7 @@ connection.connect(function(error) {
     }
 });
 
+//Displays router activity
 router.use(function(req, resp, next) {
     console.log(req.method, req.url);
     next();
