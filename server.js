@@ -112,7 +112,7 @@ router.get('/login.html', function(req, resp) {
     resp.sendFile(__dirname + '/view/login.html');
 });
 
-//Submit login form, verify email and password, set up the cookie
+//Submit login form, verify email and password, set up the session
 router.post('/login.html', function(req, resp) {
     var email = req.body.login_email;
     var password = req.body.login_password;
